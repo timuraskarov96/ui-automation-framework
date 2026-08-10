@@ -1,0 +1,50 @@
+plugins {
+    id 'java'
+    id "io.qameta.allure" version "3.0.2"
+    id "io.freefair.lombok" version "9.2.0"
+}
+
+group = 'com.askarov'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    seleniumVersion = '4.35.0'
+    allureVersion = '2.29.1'
+    webDriverManagerVersion = '6.2.0'
+    lombokVersion = '1.18.38'
+    assertjVersion = '3.27.7'
+}
+
+dependencies {
+
+    // Selenium
+    testImplementation "org.seleniumhq.selenium:selenium-java:$seleniumVersion"
+
+    // JUnit5
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.0")
+
+    // WebDriverManager
+    testImplementation "io.github.bonigarcia:webdrivermanager:$webDriverManagerVersion"
+
+    // AssertJ
+    testImplementation "org.assertj:assertj-core:$assertjVersion"
+
+    // Allure
+    testImplementation "io.qameta.allure:allure-junit5:$allureVersion"
+
+
+}
+
+test {
+    useJUnitPlatform() // Junit движок
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
