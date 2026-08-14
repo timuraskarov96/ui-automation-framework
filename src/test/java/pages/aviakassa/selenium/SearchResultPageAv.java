@@ -1,11 +1,10 @@
-package pages.aviakassa;
+package pages.aviakassa.selenium;
 
 import core.base.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.security.PublicKey;
 import java.time.Duration;
 import java.util.List;
 
@@ -50,7 +49,6 @@ public class SearchResultPageAv extends BasePage {
     public int getCards(){
 
         List<WebElement> def = driver.findElements(cards);
-
         int abc =  def.size();
         return abc;
     }
@@ -97,10 +95,9 @@ public class SearchResultPageAv extends BasePage {
 
 
 
-    // Ожилаем появления карточек билета на странице
+    // Ожидаем появления карточек билета на странице
     public void waitForSearchResults(){
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(driver -> !findElements(cards).isEmpty()); // проверяет что список карточек не пустой
     }
-
 }

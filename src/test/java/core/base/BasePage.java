@@ -7,6 +7,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
+import static com.codeborne.selenide.Selenide.switchTo;
+
 public class BasePage {
     protected WebDriver driver;
     protected WebDriverWait wait;
@@ -14,7 +16,7 @@ public class BasePage {
     // Конструктор базовой страницы
     public BasePage() {
         this.driver = DriverManager.getDriver();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(15));
     }
 
     // Открываем сайт
@@ -77,6 +79,11 @@ public class BasePage {
                 return;
             }
         }
+    }
+
+    protected void switchToNewTabSelenide() {
+
+        switchTo().window(1);
     }
 
     // Ожидание появления локатора

@@ -2,6 +2,7 @@ package core.base;
 
 import core.driver.DriverManager;
 import core.extensions.ScreenshotOnFailureExtension;
+import core.steps.AvStepsSelenide;
 import core.utils.FlightCartFactory;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Allure;
@@ -10,16 +11,21 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
-import pages.aviakassa.HomePageAv;
-import pages.aviakassa.SearchResultPageAv;
+import pages.aviakassa.selenide.HomePageAvSelenide;
+import pages.aviakassa.selenide.SearchResultPageAvSelenide;
+import pages.aviakassa.selenium.HomePageAv;
+import pages.aviakassa.selenium.SearchResultPageAv;
 
 
 @ExtendWith(ScreenshotOnFailureExtension.class)
 public class BaseTest {
 
     protected static HomePageAv homePageAv;
+    protected static HomePageAvSelenide homePageAvSelenide;
     protected static SearchResultPageAv searchResultPageAv;
+    protected static SearchResultPageAvSelenide searchResultPageAvSelenide;
     public static FlightCard flightCard = FlightCartFactory.createFlightCard();
+    public AvStepsSelenide avStepsSelenide = new AvStepsSelenide();
 
 
     @BeforeAll
@@ -33,7 +39,9 @@ public class BaseTest {
 public void setUp(){
     DriverManager.initDriver();
     homePageAv = new HomePageAv();
+    homePageAvSelenide = new HomePageAvSelenide();
     searchResultPageAv = new SearchResultPageAv();
+    searchResultPageAvSelenide = new SearchResultPageAvSelenide();
 }
 
     // Выполняется после каждого теста

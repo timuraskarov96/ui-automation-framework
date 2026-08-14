@@ -1,27 +1,20 @@
-package pages.aviakassa;
+package pages.aviakassa.selenium;
 
 
 import core.base.BasePage;
-import core.config.ConfigReader;
 import io.qameta.allure.Step;
 import models.FlightCard;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.time.LocalDate;
 
+import static core.config.ConfigReader.getUrlAviakassa;
 import static core.extensions.ScreenshotOnSteps.screenshot;
 
 // Главная страница Aviakassa
 public class HomePageAv extends BasePage {
 ;
                         // ЛОКАТОРЫ
-
-    // Открывает главную страницу
-    @Step("Открыть главную страницу Aviakassa")
-    public void openHomePage(){
-        open(ConfigReader.getUrlAviakassa());
-        screenshot();
-    }
 
     // Поле даты Туда
     private final By departureDateField =
@@ -62,14 +55,24 @@ public class HomePageAv extends BasePage {
 
                      // МЕТОДЫ
 
+
+    @Step("Открыть главную страницу Aviakassa")
+    public void openHomePage(){
+        open(getUrlAviakassa());
+        screenshot();
+    }
+
     @Step("Открываем календарь \"Дата туда\"")
     public void openDepartureCalendar(){
         click(departureDateField);
+        screenshot();
+
     }
 
     @Step("Открываем календарь \"Дата обратно\"")
     public void openReturnCalendar() {
         click(returnDateField);
+        screenshot();
     }
 
     @Step("Выбираем дату \"Туда\"")
@@ -77,6 +80,7 @@ public class HomePageAv extends BasePage {
         openDepartureCalendar();
         LocalDate date = LocalDate.of(year, month, day);
         click(getDayLocator(date));
+        screenshot();
     }
 
     @Step("Выбираем дату \"Обратно\"")
@@ -84,6 +88,7 @@ public class HomePageAv extends BasePage {
         openReturnCalendar();
         LocalDate date = LocalDate.of(year, month, day);
         click(getDayLocator(date));
+        screenshot();
     }
 
     @Step("Указываем город отправления")
@@ -106,16 +111,17 @@ public class HomePageAv extends BasePage {
     @Step("Нажатие кнопки \"Поиск\"")
     public void clickSearchButton(){
         click(searchButton);
+        screenshot();
     }
 
     @Step("Выполнить поиск {flightCard}")
-    public void searchFlight(FlightCard flightCard){
+    public void searchFlight(FlightCard flightCard) throws InterruptedException{
         enterDepartureCity(flightCard.getDepartureCity());
         enterArrivalCity(flightCard.getArrivalCity());
         selectDepartureDate(flightCard.getDepartureYear(), flightCard.getDepartureMonth(), flightCard.getDepartureDay());
         selectReturnDate(flightCard.getReturnYear(), flightCard.getReturnMonth(), flightCard.getReturnDay());
         clickSearchButton();
-        screenshot();
         switchToNewTab();
+        Thread.sleep(5000);
     }
 }

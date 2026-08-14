@@ -24,6 +24,9 @@ dependencies {
     // Selenium
     testImplementation "org.seleniumhq.selenium:selenium-java:$seleniumVersion"
 
+    // Selenide
+    testImplementation("com.codeborne:selenide:7.16.1")
+
     // JUnit5
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
