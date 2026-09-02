@@ -5,6 +5,9 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+
 public class DriverManager {
 
     public static WebDriver driver;
@@ -13,6 +16,7 @@ public class DriverManager {
     public static void initDriver(){
 //        WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.manage().window().setSize(new Dimension(1920, 1080)); // настройки экрана при откртыии браузера
     }
 

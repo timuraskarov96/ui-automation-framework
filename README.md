@@ -2,16 +2,23 @@
 
 Учебный проект по автоматизации UI-тестирования на Java.
 
-Проект создан для практического изучения Selenium WebDriver, построения собственного UI Automation Framework и применения Page Object Pattern, JUnit 5, AssertJ и Allure.
+Проект создан для практического изучения **Selenium WebDriver**, **Selenide**, построения собственного UI Automation Framework и применения **Page Object Pattern**, **JUnit 5**, **AssertJ** и **Allure**.
 
 В проекте автоматизируются два учебных веб-приложения:
 
 * **AutomationExercise** — изучение Page Object Pattern и базовых UI-сценариев.
 * **Aviakassa** — автоматизация поиска авиабилетов и проверки результатов поиска.
 
+Для Aviakassa реализованы две версии Page Objects:
+
+* Selenium WebDriver;
+* Selenide.
+
+Это позволяет на практике сравнить подходы Selenium и Selenide и увидеть, как Selenide упрощает работу с элементами, ожиданиями и браузером.
+
 ---
 
-## 📌 О проекте
+## О проекте
 
 Основная цель проекта — получить практический опыт разработки собственного UI Automation Framework, а не просто написать набор отдельных автотестов.
 
@@ -19,38 +26,44 @@
 
 * Java;
 * Selenium WebDriver;
+* Selenide;
 * JUnit 5;
 * Gradle;
 * AssertJ;
 * WebDriverManager;
 * Allure;
+* Lombok;
 * Page Object Pattern;
 * Explicit Wait;
+* автоматические ожидания Selenide;
 * работа с несколькими вкладками браузера;
 * CSS Selectors и XPath;
 * работа с динамическими элементами;
 * JUnit Extensions;
 * создание screenshots;
-* attachments в Allure.
+* attachments в Allure;
+* организация бизнес-действий через Steps;
+* сравнение Selenium и Selenide.
 
 ---
 
 ## Технологический стек
 
-| Технология             | Назначение                                |
-| ---------------------- | ----------------------------------------- |
-| **Java**               | Основной язык программирования            |
-| **Gradle**             | Сборка проекта и управление зависимостями |
-| **Selenium WebDriver** | Автоматизация браузера                    |
-| **JUnit 5**            | Написание и запуск автотестов             |
-| **AssertJ**            | Проверки и assertions                     |
-| **WebDriverManager**   | Управление WebDriver                      |
-| **Allure**             | Формирование тестовых отчётов             |
-| **Lombok**             | Уменьшение количества boilerplate-кода    |
+| Технология             | Назначение                                      |
+| ---------------------- | ----------------------------------------------- |
+| **Java**               | Основной язык программирования                  |
+| **Gradle**             | Сборка проекта и управление зависимостями       |
+| **Selenium WebDriver** | Автоматизация браузера                          |
+| **Selenide**           | Упрощённая автоматизация браузера и работа с UI |
+| **JUnit 5**            | Написание и запуск автотестов                   |
+| **AssertJ**            | Проверки и assertions                           |
+| **WebDriverManager**   | Управление WebDriver                            |
+| **Allure**             | Формирование тестовых отчётов                   |
+| **Lombok**             | Уменьшение количества boilerplate-кода          |
 
 ---
 
-## Архитектура Framework
+# Архитектура Framework
 
 В проекте используется **Page Object Pattern**.
 
@@ -60,15 +73,15 @@
 * управление WebDriver;
 * конфигурацию;
 * Page Objects;
-* бизнес-действия;
 * тесты;
 * модели данных;
 * вспомогательные классы;
-* Allure / JUnit Extensions.
+* Allure 
+---
 
-### BasePage
+## BasePage
 
-`BasePage` — базовый класс для Page Objects.
+`BasePage` — базовый класс для Selenium Page Objects.
 
 Содержит общие методы взаимодействия с элементами Selenium:
 
@@ -77,40 +90,69 @@
 * ввод текста;
 * получение текста;
 * ожидания;
-* работа с WebElement.
+* работа с `WebElement`;
+* работа с несколькими вкладками браузера.
 
-### BaseTest
+Selenide Page Objects на текущем этапе используют возможности самого Selenide и постепенно избавляются от низкоуровневого управления WebDriver.
+
+---
+
+## BaseTest
 
 `BaseTest` — базовый класс для автотестов.
 
-Используется для общей настройки тестовой среды и работы с Page Objects.
+Используется для:
 
-### ConfigReader
+* общей настройки тестовой среды;
+* инициализации Page Objects;
+* управления жизненным циклом тестов;
+* подключения общих расширений Framework.
 
-`ConfigReader` отвечает за чтение параметров из конфигурационного файла.
+---
 
-### DriverManager
+## ConfigReader
+
+`ConfigReader` отвечает за чтение параметров из конфигурационного файла `config.properties`.
+
+Конфигурация используется для хранения URL и других параметров проекта.
+
+---
+
+## DriverManager
 
 `DriverManager` отвечает за настройку и получение WebDriver.
 
-### Steps
+На текущем этапе Selenium используется как основа существующего Framework, а Selenide применяется для отдельной реализации UI-автоматизации Aviakassa.
+
+---
+
+# Steps
 
 В проекте используется отдельный слой `steps` для группировки бизнес-действий.
 
-На данный момент реализован:
+Реализованы:
 
-* `AvSteps` — действия, связанные с автоматизацией Aviakassa.
+* `AvSteps` — бизнес-действия для Selenium-версии Aviakassa;
+* `AvStepsSelenide` — бизнес-действия для Selenide-версии Aviakassa.
 
-### Extensions
+Использование Steps позволяет отделить последовательность действий пользователя от технической реализации Page Objects.
 
-В проекте используются JUnit Extensions для работы с Allure.
+---
+
+# Extensions
+
+В проекте используются JUnit Extensions для работы с Allure и screenshots.
 
 Реализованы:
 
 * `ScreenshotOnFailureExtension` — создание screenshot при падении теста;
-* `ScreenshotOnSteps` — работа со screenshots отдельных шагов.
+* `ScreenshotOnSteps` — создание screenshots отдельных шагов.
 
-### Models
+Screenshots и текстовые attachments используются для повышения информативности Allure Report.
+
+---
+
+# Models
 
 В `models` находятся модели данных, используемые в тестах.
 
@@ -119,11 +161,22 @@
 * `FlightCard` — модель данных авиабилета;
 * `User` — модель пользователя.
 
-### Pages
+Например, `FlightCard` используется для передачи параметров поиска авиабилетов:
+
+* город отправления;
+* город назначения;
+* дата вылета;
+* дата возвращения.
+
+---
+
+# Page Objects
 
 Page Objects разделены по тестируемым приложениям.
 
-Для **AutomationExercise**:
+## AutomationExercise
+
+Для AutomationExercise реализованы:
 
 * `HomePage`;
 * `LoginPage`;
@@ -132,16 +185,45 @@ Page Objects разделены по тестируемым приложения
 * `AccountCreatedPage`;
 * `CreateAccountPage`.
 
-Для **Aviakassa**:
+Все эти Page Objects на текущем этапе реализованы с использованием Selenium WebDriver.
+
+---
+
+## Aviakassa — Selenium
+
+Для Selenium-версии Aviakassa реализованы:
 
 * `HomePageAv`;
 * `SearchResultPageAv`.
 
+Эти классы используют Selenium WebDriver, `By`, `WebElement`, ожидания и другие стандартные возможности Selenium.
+
 ---
 
-## 📁 Структура проекта
+## Aviakassa — Selenide
 
-Актуальная структура проекта:
+Для Selenide-версии Aviakassa реализованы:
+
+* `HomePageAvSelenide`;
+* `SearchResultPageAvSelenide`.
+
+Selenide-версия использует:
+
+* `SelenideElement`;
+* `ElementsCollection`;
+* `$`;
+* `$$`;
+* `shouldBe()`;
+* `shouldHave()`;
+* встроенные ожидания Selenide;
+* упрощённую работу с вкладками браузера.
+
+Selenide-реализация создаётся как отдельная версия Page Objects, чтобы не ломать уже работающий Selenium Framework и одновременно сравнивать оба подхода.
+
+---
+
+# Структура проекта
+
 
 ```text
 UIFrameWorkProject/
@@ -169,7 +251,8 @@ UIFrameWorkProject/
 │   │   │   │   │   └── ScreenshotOnSteps.java
 │   │   │   │   │
 │   │   │   │   ├── steps/
-│   │   │   │   │   └── AvSteps.java
+│   │   │   │   │   ├── AvSteps.java
+│   │   │   │   │   └── AvStepsSelenide.java
 │   │   │   │   │
 │   │   │   │   ├── tests/
 │   │   │   │   │   │
@@ -199,8 +282,14 @@ UIFrameWorkProject/
 │   │   │       │   └── SignupPage.java
 │   │   │       │
 │   │   │       └── aviakassa/
-│   │   │           ├── HomePageAv.java
-│   │   │           └── SearchResultPageAv.java
+│   │   │           │
+│   │   │           ├── selenide/
+│   │   │           │   ├── HomePageAvSelenide.java
+│   │   │           │   └── SearchResultPageAvSelenide.java
+│   │   │           │
+│   │   │           └── selenium/
+│   │   │               ├── HomePageAv.java
+│   │   │               └── SearchResultPageAv.java
 │   │   │
 │   │   └── resources/
 │   │
@@ -209,6 +298,7 @@ UIFrameWorkProject/
 │
 ├── build.gradle
 ├── settings.gradle
+├── gradle/
 ├── gradlew
 ├── gradlew.bat
 ├── README.md
@@ -217,32 +307,32 @@ UIFrameWorkProject/
 
 ---
 
-## 🧪 Автотесты
+# Автотесты
 
-### AutomationExercise
+## AutomationExercise
 
 На AutomationExercise реализованы Page Objects и базовые UI-тесты.
 
-#### Авторизация
+### Авторизация
 
 * успешный вход;
 * неверный пароль;
 * Logout.
 
-#### Регистрация
+### Регистрация
 
 * создание аккаунта;
 * проверка успешной регистрации.
 
-#### Дополнительные сценарии
-
-По мере развития проекта тестовое покрытие AutomationExercise будет расширяться.
+По мере развития проекта тестовое покрытие AutomationExercise может расширяться.
 
 ---
 
-### Aviakassa
+# Aviakassa
 
-Для Aviakassa реализирована автоматизация поиска авиабилетов и проверки страницы результатов.
+Для Aviakassa реализована автоматизация поиска авиабилетов и проверки страницы результатов.
+
+На текущем этапе существует Selenium и Selenide реализация.
 
 Основной сценарий:
 
@@ -252,13 +342,14 @@ UIFrameWorkProject/
 4. Выбор даты вылета.
 5. Выбор даты возвращения.
 6. Запуск поиска.
-7. Ожидание загрузки результатов.
-8. Проверка найденных билетов.
+7. Переключение на страницу результатов.
+8. Ожидание загрузки результатов.
+9. Проверка найденных билетов.
 
 Проверяется:
 
 * открытие страницы результатов;
-* наличие хотя бы одного билета;
+* наличие билетов;
 * авиакомпания первого билета;
 * время вылета;
 * дата вылета;
@@ -268,7 +359,62 @@ UIFrameWorkProject/
 
 ---
 
-## 📊 Allure Report
+# 🔄 Selenium vs Selenide
+
+Одной из целей проекта является практическое сравнение Selenium WebDriver и Selenide.
+
+## Selenium
+
+В Selenium-версии используются:
+
+```java
+By
+WebElement
+WebDriverWait
+ExpectedConditions
+driver.findElement()
+driver.findElements()
+driver.switchTo()
+```
+
+Разработчик самостоятельно управляет поиском элементов и ожиданиями.
+
+---
+
+## Selenide
+
+В Selenide-версии используются:
+
+```java
+SelenideElement
+ElementsCollection
+$()
+$$()
+shouldBe()
+shouldHave()
+switchTo()
+```
+
+Selenide автоматически выполняет ожидание элементов в большинстве типичных сценариев.
+
+Например, Selenium:
+
+```java
+new WebDriverWait(driver, Duration.ofSeconds(10))
+        .until(driver -> !findElements(cards).isEmpty());
+```
+
+В Selenide:
+
+```java
+cards.shouldHave(sizeGreaterThan(0));
+```
+
+Это позволяет сделать код Page Objects более компактным и декларативным.
+
+---
+
+# Allure Report
 
 В проект интегрирован **Allure Report**.
 
@@ -276,7 +422,8 @@ UIFrameWorkProject/
 
 * `@Step`;
 * attachments;
-* Скриншоты при падении теста, а аткже отдельных шагов;
+* screenshots при падении тестов;
+* screenshots отдельных шагов.
 
 Пример структуры Allure-отчёта:
 
@@ -304,33 +451,35 @@ shouldSearchFlights
 └── Проверка цены билета
 ```
 
-При падении теста к отчёту прикрепляется screenshot состояния браузера.
+При падении теста к соответствующему шагу прикрепляется screenshot состояния браузера.
 
 ---
 
-## 🚀 Запуск проекта
+#  Запуск проекта
 
-### Клонирование проекта
+## Клонирование проекта
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/timuraskarov96/ui-automation-framework.git
 ```
 
 Перейти в директорию проекта:
 
 ```bash
-cd UIFrameWorkProject
+cd ui-automation-framework
 ```
 
-### Запуск всех тестов
+---
 
-Windows:
+## Запуск всех тестов
 
-```bash
-gradlew test
+### Windows PowerShell
+
+```powershell
+.\gradlew test
 ```
 
-Linux / macOS:
+### Linux / macOS
 
 ```bash
 ./gradlew test
@@ -338,14 +487,29 @@ Linux / macOS:
 
 ---
 
-## 📋 Запуск отдельного теста
+## Полный прогон с очисткой
 
-Например, запуск тестов Aviakassa:
+Windows:
+
+```powershell
+.\gradlew clean test
+```
+
+Linux / macOS:
 
 ```bash
-gradlew test --tests "core.tests.aviakassa.AviakassaSearchTest"
+./gradlew clean test
 ```
 
 ---
 
+## Запуск отдельного теста
+
+Например, запуск теста Aviakassa:
+
+```powershell
+.\gradlew test --tests "core.tests.aviakassa.AviakassaSearchTest"
+```
+
+---
 

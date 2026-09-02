@@ -12,11 +12,14 @@ import static com.codeborne.selenide.Selenide.switchTo;
 public class BasePage {
     protected WebDriver driver;
     protected WebDriverWait wait;
+    protected JavascriptExecutor js;
+
 
     // Конструктор базовой страницы
     public BasePage() {
         this.driver = DriverManager.getDriver();
         wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        js = (JavascriptExecutor) driver;
     }
 
     // Открываем сайт
@@ -82,7 +85,6 @@ public class BasePage {
     }
 
     protected void switchToNewTabSelenide() {
-
         switchTo().window(1);
     }
 
@@ -91,4 +93,6 @@ public class BasePage {
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(driver -> driver.findElement(locator).isDisplayed());
     }
+
+
 }

@@ -1,5 +1,6 @@
 package core.base;
 
+import com.codeborne.selenide.Configuration;
 import core.driver.DriverManager;
 import core.extensions.ScreenshotOnFailureExtension;
 import core.steps.AvStepsSelenide;
@@ -15,6 +16,8 @@ import pages.aviakassa.selenide.HomePageAvSelenide;
 import pages.aviakassa.selenide.SearchResultPageAvSelenide;
 import pages.aviakassa.selenium.HomePageAv;
 import pages.aviakassa.selenium.SearchResultPageAv;
+
+import static com.codeborne.selenide.Configuration.browser;
 
 
 @ExtendWith(ScreenshotOnFailureExtension.class)
@@ -32,6 +35,15 @@ public class BaseTest {
     public static void downloadDriver(){
         WebDriverManager.chromedriver().setup();
         // Настраивает подходящий ChromeDriver и настраивает окружение так, чтобы Selenium мог его запустить.
+
+//// Включаем медленный режим
+//        Configuration.browser = "chrome";
+//        Configuration.headless = false; // обязательно выключить headless
+//        Configuration.holdBrowserOpen = true; // браузер не закрывается
+//
+//// Добавляем задержку между действиями
+//        Configuration.fastSetValue = false; // замедляет ввод текста
+//        Configuration.clickViaJs = false; // отключаем клик через JS
     }
 
     // Выполняется перед каждым тестом

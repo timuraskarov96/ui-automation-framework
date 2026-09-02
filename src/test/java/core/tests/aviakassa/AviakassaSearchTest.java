@@ -23,8 +23,10 @@ public class AviakassaSearchTest extends BaseTest {
 //        SELENIUM TEST:
         homePageAv.openHomePage();
         homePageAv.searchFlight(flightCard);
+
         attachText("URL страницы результатов", driver.getCurrentUrl());
         attachText("Количество найденных билетов", String.valueOf(searchResultPageAv.getCards()));
+
         checkOpenSearchPage();
         checkFirstCardDisplayed();
         checkAirlineNameFirstCard();
