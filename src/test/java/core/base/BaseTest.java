@@ -12,10 +12,15 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.chrome.ChromeOptions;
 import pages.aviakassa.selenide.HomePageAvSelenide;
 import pages.aviakassa.selenide.SearchResultPageAvSelenide;
 import pages.aviakassa.selenium.HomePageAv;
 import pages.aviakassa.selenium.SearchResultPageAv;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.codeborne.selenide.Configuration.browser;
 
@@ -28,22 +33,15 @@ public class BaseTest {
     protected static SearchResultPageAv searchResultPageAv;
     protected static SearchResultPageAvSelenide searchResultPageAvSelenide;
     public static FlightCard flightCard = FlightCartFactory.createFlightCard();
-    public AvStepsSelenide avStepsSelenide = new AvStepsSelenide();
+
+
+
+
 
 
     @BeforeAll
     public static void downloadDriver(){
         WebDriverManager.chromedriver().setup();
-        // Настраивает подходящий ChromeDriver и настраивает окружение так, чтобы Selenium мог его запустить.
-
-//// Включаем медленный режим
-//        Configuration.browser = "chrome";
-//        Configuration.headless = false; // обязательно выключить headless
-//        Configuration.holdBrowserOpen = true; // браузер не закрывается
-//
-//// Добавляем задержку между действиями
-//        Configuration.fastSetValue = false; // замедляет ввод текста
-//        Configuration.clickViaJs = false; // отключаем клик через JS
     }
 
     // Выполняется перед каждым тестом

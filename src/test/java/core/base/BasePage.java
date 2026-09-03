@@ -2,8 +2,11 @@ package core.base;
 
 import core.driver.DriverManager;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import pages.threadqa.selenium.ThreadQAPage;
 
+import java.io.File;
 import java.time.Duration;
 import java.util.List;
 
@@ -95,4 +98,47 @@ public class BasePage {
     }
 
 
+
+    // Клик на динамический элемент наведением мышки
+    public void actionOfClick(WebDriver driver, By locator){
+        new Actions(driver)                       // 1. Создаём объект Actions
+                .moveToElement(driver.findElement(locator)) // 2. Наводим мышь на элемент
+                .click()                               // 3. Кликаем по нему
+                .perform();                            // 4. Выполняем все действия
+    }
+
+    // Перетаскивание элемента из одной области в другую
+    public void actionDragAndDrop(WebElement drag, WebElement drop){
+        new Actions(driver)
+                .clickAndHold(drag)          // 1. Зажать левую кнопку мыши
+                .moveToElement(drop)         // 2. Переместить к цели
+                .release(drop)               // 3. Отпустить кнопку
+                .perform();
+    }
+
+    // Загрузка файла
+    public void uploadFile(By locator){
+        driver.findElement(locator).sendKeys("C:/Java/document.docx");
+    }
+
+
+    public File waitForDownload(String fileName, int timeoutSeconds) {
+
+        // 1. Получаем путь к папке Загрузки
+        String downloadsPath = System.getProperty("user.home") + "\\Downloads";
+
+        File file = new File(downloadsPath, fileName);
+        long startTime = System.currentTimeMillis();
+        while (System.currentTimeMillis() - startTime < timeoutSeconds * 1000) {
+            if (file.exists() && !file.getName().endsWith(".crdownload")) {
+                return file;
+            }
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        throw new RuntimeException("Файл не скачался");
+    }
 }
